@@ -4,7 +4,7 @@
 pub struct WindowSettings {
     /// Position of window in physical pixels. This is either
     /// the inner or outer position depending on the platform.
-    /// See [`winit::window::WindowBuilder::with_position`] for details.
+    /// See [`tao::window::WindowBuilder::with_position`] for details.
     position: Option<egui::Pos2>,
 
     fullscreen: bool,
@@ -14,7 +14,7 @@ pub struct WindowSettings {
 }
 
 impl WindowSettings {
-    pub fn from_display(window: &winit::window::Window) -> Self {
+    pub fn from_display(window: &tao::window::Window) -> Self {
         let inner_size_points = window.inner_size().to_logical::<f32>(window.scale_factor());
         let position = if cfg!(macos) {
             // MacOS uses inner position when positioning windows.
@@ -48,15 +48,15 @@ impl WindowSettings {
 
     pub fn initialize_window(
         &self,
-        mut window: winit::window::WindowBuilder,
-    ) -> winit::window::WindowBuilder {
+        mut window: tao::window::WindowBuilder,
+    ) -> tao::window::WindowBuilder {
         // If the app last ran on two monitors and only one is now connected, then
         // the given position is invalid.
         // If this happens on Mac, the window is clamped into valid area.
         // If this happens on Windows, the clamping behavior is managed by the function
         // clamp_window_to_sane_position.
         if let Some(pos) = self.position {
-            window = window.with_position(winit::dpi::PhysicalPosition {
+            window = window.with_position(tao::dpi::PhysicalPosition {
                 x: pos.x as f64,
                 y: pos.y as f64,
             });
@@ -64,13 +64,13 @@ impl WindowSettings {
 
         if let Some(inner_size_points) = self.inner_size_points {
             window
-                .with_inner_size(winit::dpi::LogicalSize {
+                .with_inner_size(tao::dpi::LogicalSize {
                     width: inner_size_points.x as f64,
                     height: inner_size_points.y as f64,
                 })
                 .with_fullscreen(
                     self.fullscreen
-                        .then_some(winit::window::Fullscreen::Borderless(None)),
+                        .then_some(tao::window::Fullscreen::Borderless(None)),
                 )
         } else {
             window
@@ -90,7 +90,7 @@ impl WindowSettings {
 
     pub fn clamp_window_to_sane_position<E>(
         &mut self,
-        event_loop: &winit::event_loop::EventLoopWindowTarget<E>,
+        event_loop: &tao::event_loop::EventLoopWindowTarget<E>,
     ) {
         if let (Some(position), Some(inner_size_points)) =
             (&mut self.position, &self.inner_size_points)
