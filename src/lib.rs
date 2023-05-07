@@ -86,7 +86,7 @@ pub struct State {
 }
 
 impl State {
-    pub fn new<T>() -> Self {
+    pub fn new() -> Self {
         let egui_input = egui::RawInput {
             focused: false, // winit will tell us when we have focus
             ..Default::default()
