@@ -8,3 +8,9 @@
 This crates provides bindings between [`egui`](https://github.com/emilk/egui) and [`tao`](https://crates.io/crates/tao).
 
 The library translates winit events to egui, handled copy/paste, updates the cursor, open links clicked in egui, etc.
+
+```shell
+git checkout upstream-master
+git pull
+git subtree split --prefix=crates/egui-winit --onto upstream-egui-winit -b upstream-egui-winit
+```
